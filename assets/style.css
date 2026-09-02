@@ -54,6 +54,25 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{o
 }
 .stamp::before{content:"●";font-size:8px}
 
+/* ---------- leader-referral banner ---------- */
+.leader-banner{
+  display:flex;align-items:center;flex-wrap:wrap;gap:12px;
+  background:var(--teal);color:var(--ink);
+  padding:12px 24px;font-size:13.5px;position:relative;
+  border-bottom:1px solid var(--line-strong);
+}
+.leader-banner span{flex:1 1 320px}
+.leader-banner-cta{
+  flex:0 0 auto;color:var(--ink);font-weight:700;text-decoration:none;
+  border:1px solid var(--ink);border-radius:4px;padding:5px 12px;white-space:nowrap;
+}
+.leader-banner-cta:hover{background:var(--ink);color:var(--teal)}
+.leader-banner-close{
+  flex:0 0 auto;background:none;border:none;color:var(--ink);
+  font-size:20px;line-height:1;cursor:pointer;padding:0 4px;opacity:.8;
+}
+.leader-banner-close:hover{opacity:1}
+
 /* ---------- top bar / nav ---------- */
 .topbar{border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:20}
 .topbar .wrap{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;flex-wrap:wrap;gap:10px}
