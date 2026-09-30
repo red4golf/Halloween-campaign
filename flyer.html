@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recruiting Flyer | Mission: On The Move</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<style>
+  :root{
+    --ink:#ece4d1; --muted:#b7ac93; --dim:#8b8168; --paper:#100f0b; --panel:#1b1912;
+    --orange:#e2691f; --orange-bright:#f3873c; --red:#9c2620; --red-bright:#c73128;
+    --teal:#4a7a5f; --teal-bright:#6fa585; --line:rgba(236,228,209,0.18);
+    --headline:#f7f1e2;
+  }
+  /* Ink-saver (light) version for home printers */
+  body.light{
+    --ink:#1d1a14; --muted:#3d372b; --dim:#5f5747; --paper:#ffffff; --panel:#f4efe3;
+    --teal-bright:#2f5a42; --line:rgba(29,26,20,0.2); --headline:#1d1a14;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:#2a2720;color:var(--ink);font-family:'Libre Franklin',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2{font-family:'Bebas Neue',sans-serif;letter-spacing:.02em;margin:0;font-weight:400}
+
+  /* ---------- controls (never printed) ---------- */
+  .controls{max-width:900px;margin:0 auto;padding:22px 20px 8px;color:#ece4d1}
+  .controls h1{font-size:34px;color:#f7f1e2}
+  .controls p{margin:6px 0 14px;color:#b7ac93;font-size:15px;max-width:70ch}
+  .controls .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .controls button{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.04em;padding:11px 20px;border-radius:3px;border:2px solid transparent;cursor:pointer;background:#e2691f;color:#1a1206}
+  .controls button.ghost{background:transparent;border-color:rgba(236,228,209,.35);color:#ece4d1}
+  .controls label{font-size:14px;color:#b7ac93;display:flex;gap:6px;align-items:center}
+  .warn{margin-top:12px;padding:10px 14px;border:1px solid #c73128;color:#f3b0a8;border-radius:4px;font-size:14px;display:none}
+  .tabs{display:flex;gap:8px;margin:18px 0 0}
+  .tabs button{font-size:15px;padding:8px 14px}
+  .stage{display:flex;justify-content:center;padding:18px 12px 60px}
+  .view{display:none}
+  .view.on{display:block}
+  .scaler{transform-origin:top center}
+
+  /* ---------- shared poster pieces ---------- */
+  .poster{background:var(--paper);color:var(--ink);position:relative;overflow:hidden}
+  body:not(.light) .poster{background:
+      radial-gradient(ellipse 80% 45% at 50% 0%, rgba(156,38,32,0.30), transparent 65%),
+      radial-gradient(ellipse 90% 40% at 80% 100%, rgba(74,122,95,0.18), transparent 60%),
+      var(--paper)}
+  .stripe{height:14px;background:repeating-linear-gradient(-45deg,var(--red) 0 20px,var(--orange) 20px 40px)}
+  .eyebrow{font-family:'Special Elite',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-bright)}
+  .org{display:flex;align-items:center;gap:10px}
+  .org img{height:30px;width:auto}
+  body:not(.light) .org img{filter:brightness(0) invert(1);opacity:.92}
+  .headline{color:var(--headline);line-height:.9}
+  body:not(.light) .headline{text-shadow:0 0 40px rgba(226,105,31,.35), 3px 3px 0 rgba(156,38,32,.55)}
+  .title{font-family:'Bebas Neue',sans-serif;color:var(--orange-bright);letter-spacing:.03em}
+  body.light .title{color:#b8500f}
+  .facts{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .fact{flex:1;text-align:center;border-right:1px solid var(--line)}
+  .fact:last-child{border-right:none}
+  .fact .num{font-family:'Bebas Neue',sans-serif;color:var(--orange-bright);line-height:1}
+  body.light .fact .num{color:#b8500f}
+  .fact .lab{color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+  .qrbox{background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center}
+  .qrbox img{display:block;image-rendering:pixelated;width:100%;height:100%}
+  .stamp{display:inline-block;border:2px solid var(--red-bright);color:var(--red-bright);font-family:'Special Elite',monospace;letter-spacing:.08em;text-transform:uppercase;transform:rotate(-2deg);border-radius:2px;background:rgba(156,38,32,0.08)}
+  .legal{color:var(--dim);line-height:1.5}
+
+  /* ---------- letter flyer: 8.5in x 11in ---------- */
+  #letter{width:8.5in;height:11in;display:flex;flex-direction:column}
+  #letter .inner{flex:1;min-height:0;display:flex;flex-direction:column;padding:.5in .6in .4in}
+  #letter .org{font-size:15px;font-weight:600;color:var(--muted)}
+  #letter .org b{color:var(--ink)}
+  #letter .eyebrow{font-size:14px;margin-top:.25in}
+  #letter .headline{font-size:96px;margin-top:6px}
+  #letter .title{font-size:34px;margin-top:10px}
+  #letter .pitch{font-size:17px;line-height:1.55;color:var(--muted);margin-top:14px;max-width:6.6in}
+  #letter .pitch strong{color:var(--ink)}
+  #letter .facts{margin-top:.22in;padding:12px 0}
+  #letter .fact .num{font-size:40px}
+  #letter .fact .lab{font-size:12px;margin-top:4px}
+  #letter .join{display:flex;gap:.35in;align-items:center;margin-top:.25in}
+  #letter .qrbox{width:2.4in;height:2.4in;padding:.12in;flex:none}
+  #letter .join h2{font-size:52px;color:var(--headline);line-height:.95}
+  #letter .join p{font-size:16px;color:var(--muted);margin:10px 0 0;line-height:1.5}
+  #letter .join .url{font-family:'Special Elite',monospace;font-size:13px;color:var(--teal-bright);margin-top:12px;word-break:break-all}
+  #letter .stamp{font-size:13px;padding:6px 14px;margin-top:14px}
+  #letter .foot{margin-top:auto;border-top:1px solid var(--line);padding-top:12px}
+  #letter .why{font-size:14px;color:var(--muted);line-height:1.5}
+  #letter .legal{font-size:10.5px;margin-top:8px}
+
+  /* ---------- square social image: 1080 x 1080 ---------- */
+  #square{width:1080px;height:1080px;display:flex;flex-direction:column}
+  #square .inner{flex:1;min-height:0;display:flex;flex-direction:column;padding:58px 70px 44px}
+  #square .org{font-size:22px;font-weight:600;color:var(--muted)}
+  #square .org img{height:38px}
+  #square .org b{color:var(--ink)}
+  #square .headline{font-size:140px;margin-top:26px}
+  #square .title{font-size:46px;margin-top:12px}
+  #square .facts{margin-top:30px;padding:16px 0}
+  #square .fact .num{font-size:52px}
+  #square .fact .lab{font-size:16px;margin-top:4px}
+  #square .join{display:flex;gap:44px;align-items:center;margin-top:28px}
+  #square .qrbox{width:300px;height:300px;padding:16px;flex:none}
+  #square .join h2{font-size:74px;color:var(--headline);line-height:.95}
+  #square .join p{font-size:24px;color:var(--muted);margin:12px 0 0;line-height:1.4}
+  #square .foot{margin-top:auto;font-size:18px;color:var(--dim)}
+
+  @media print{
+    @page{size:letter;margin:0}
+    body{background:none}
+    .controls,.tabs,#squareView{display:none !important}
+    .stage{padding:0;display:block}
+    #letterView{display:block !important}
+    .scaler{transform:none !important}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <h1>Your recruiting flyer</h1>
+  <p>This flyer carries your personal QR code. Anyone who scans it lands on the Mission: On The Move site, and their sign-up is credited to your crew. Print the letter-size version for bulletin boards, schools, and posts, or save the square image to text or post online.</p>
+  <div class="row">
+    <button id="printBtn" type="button">Print letter flyer</button>
+    <button id="pngBtn" type="button" class="ghost">Save square image (PNG)</button>
+    <label><input type="checkbox" id="lightToggle"> Ink-saver (white background)</label>
+  </div>
+  <div class="warn" id="warn">This flyer has no leader code, so sign-ups from it won't be credited to a crew. Open it from the link in your leader kit email.</div>
+  <div class="tabs">
+    <button type="button" class="ghost" data-view="letterView">Letter flyer</button>
+    <button type="button" class="ghost" data-view="squareView">Square image</button>
+  </div>
+</div>
+
+<div class="stage">
+  <!-- LETTER -->
+  <div class="view on" id="letterView"><div class="scaler" id="letterScaler">
+    <div class="poster" id="letter">
+      <div class="stripe"></div>
+      <div class="inner">
+        <div class="org"><img src="assets/logo.png" alt=""> <span><b>Angel's Wings Transport</b> · a Halloween community challenge</span></div>
+        <div class="eyebrow">Mission: On The Move — Zombie Survival Edition</div>
+        <h1 class="headline">Prove you can<br>make it out.</h1>
+        <div class="title">A two-week walking challenge, all from your phone</div>
+        <p class="pitch">The outbreak has hit. Your daily steps move your crew through a light, family-friendly zombie-survival story on the <strong>A Step Ahead™</strong> app. No wearable needed, all fitness levels welcome, and every registration helps Angel's Wings Transport keep its volunteer pilots flying <strong>free</strong> for veterans, rescue animals, and medical patients.</p>
+        <div class="facts">
+          <div class="fact"><div class="num">Oct 17–31</div><div class="lab">Two weeks</div></div>
+          <div class="fact"><div class="num">$7</div><div class="lab">To register</div></div>
+          <div class="fact"><div class="num">Up to 10</div><div class="lab">Per crew</div></div>
+          <div class="fact"><div class="num">All</div><div class="lab">Fitness levels</div></div>
+        </div>
+        <div class="join">
+          <div class="qrbox"><img class="qr" alt="QR code to join this crew"></div>
+          <div>
+            <h2 class="joinline">Join my crew.</h2>
+            <p>Scan to get on the list. Registration opens soon, and you'll be first in when it does.</p>
+            <div class="url"></div>
+            <div class="stamp">Scan · Walk · Survive</div>
+          </div>
+        </div>
+        <div class="foot">
+          <div class="why">Your $7 covers your app access and supports AWT's operations. It never pays a pilot or funds a specific flight.</div>
+          <div class="legal">Angel's Wings Transport is an all-volunteer 501(c)(3) nonprofit, EIN 47-4874470. The Tryout™ and A Step Ahead™ are trademarks of FIX Health; AWT purchases and administers access on participants' behalf and is not affiliated with or endorsed by FIX Health.</div>
+        </div>
+      </div>
+      <div class="stripe"></div>
+    </div>
+  </div></div>
+
+  <!-- SQUARE -->
+  <div class="view" id="squareView"><div class="scaler" id="squareScaler">
+    <div class="poster" id="square">
+      <div class="stripe"></div>
+      <div class="inner">
+        <div class="org"><img src="assets/logo.png" alt=""> <span><b>Angel's Wings Transport</b> · Halloween challenge</span></div>
+        <h1 class="headline">Prove you can<br>make it out.</h1>
+        <div class="title">Mission: On The Move — a two-week zombie-survival walk</div>
+        <div class="facts">
+          <div class="fact"><div class="num">Oct 17–31</div><div class="lab">From your phone</div></div>
+          <div class="fact"><div class="num">$7</div><div class="lab">To register</div></div>
+          <div class="fact"><div class="num">Up to 10</div><div class="lab">Per crew</div></div>
+        </div>
+        <div class="join">
+          <div class="qrbox"><img class="qr" alt="QR code to join this crew"></div>
+          <div>
+            <h2 class="joinline">Join my crew.</h2>
+            <p>Scan to get on the list. Every registration helps keep AWT's volunteer pilots flying free for veterans and rescue animals.</p>
+          </div>
+        </div>
+        <div class="foot">Angel's Wings Transport · all-volunteer 501(c)(3) nonprofit</div>
+      </div>
+      <div class="stripe"></div>
+    </div>
+  </div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  var params = new URLSearchParams(window.location.search);
+  var leader = (params.get('leader') || '').replace(/[^A-Za-z0-9_-]/g, '');
+  var rawName = (params.get('name') || '').trim();
+  var first = rawName.split(/\s+/)[0].replace(/[^A-Za-zÀ-ſ'-]/g, '').slice(0, 20);
+
+  var base = 'https://red4golf.github.io/Halloween-campaign/index.html';
+  var target = leader ? base + '?leader=' + encodeURIComponent(leader) : base;
+
+  if (!leader) { document.getElementById('warn').style.display = 'block'; }
+
+  // Personalize the call to action when the leader's first name is known.
+  if (first) {
+    Array.prototype.forEach.call(document.querySelectorAll('.joinline'), function (el) {
+      el.textContent = 'Join ' + first + "'s crew.";
+    });
+  }
+
+  // QR code: error-correction level M, rendered as a crisp image.
+  var qr = qrcode(0, 'M');
+  qr.addData(target);
+  qr.make();
+  var dataUrl = qr.createDataURL(12, 2);
+  Array.prototype.forEach.call(document.querySelectorAll('img.qr'), function (img) { img.src = dataUrl; });
+  var shortUrl = 'red4golf.github.io/Halloween-campaign' + (leader ? '/?leader=' + leader : '');
+  Array.prototype.forEach.call(document.querySelectorAll('.url'), function (el) { el.textContent = shortUrl; });
+
+  // View tabs
+  function show(id) {
+    Array.prototype.forEach.call(document.querySelectorAll('.view'), function (v) { v.classList.toggle('on', v.id === id); });
+    fit();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-view')); });
+  });
+
+  // Scale the poster previews down to fit narrow screens (print is unscaled).
+  function fit() {
+    var avail = Math.max(280, window.innerWidth - 24);
+    [['letterScaler', 816, 1056], ['squareScaler', 1080, 1080]].forEach(function (s) {
+      var el = document.getElementById(s[0]);
+      var k = Math.min(1, avail / s[1]);
+      el.style.transform = 'scale(' + k + ')';
+      el.parentNode.style.height = (s[2] * k) + 'px';
+      el.parentNode.style.width = (s[1] * k) + 'px';
+    });
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  document.getElementById('lightToggle').addEventListener('change', function (e) {
+    document.body.classList.toggle('light', e.target.checked);
+  });
+
+  document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+
+  document.getElementById('pngBtn').addEventListener('click', function () {
+    var btn = this;
+    var view = document.getElementById('squareView');
+    var wasOn = view.classList.contains('on');
+    var scaler = document.getElementById('squareScaler');
+    var prev = scaler.style.transform;
+    view.classList.add('on');
+    scaler.style.transform = 'none';
+    btn.disabled = true; btn.textContent = 'Saving…';
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
+      return html2canvas(document.getElementById('square'), { scale: 1, backgroundColor: null, useCORS: true });
+    }).then(function (canvas) {
+      var a = document.createElement('a');
+      a.download = 'mission-on-the-move-' + (first ? first.toLowerCase() + '-' : '') + 'crew.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }).catch(function () {
+      alert('Sorry, the image could not be saved on this device. Try a desktop browser, or take a screenshot of the square image.');
+    }).then(function () {
+      scaler.style.transform = prev;
+      if (!wasOn) { view.classList.remove('on'); }
+      btn.disabled = false; btn.textContent = 'Save square image (PNG)';
+      fit();
+    });
+  });
+})();
+</script>
+</body>
+</html>
