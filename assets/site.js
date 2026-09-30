@@ -16,10 +16,12 @@ window.MOTM = window.MOTM || {
   function captureLeaderCode() {
     try {
       var fromUrl = new URLSearchParams(window.location.search).get('leader');
-      if (fromUrl) { sessionStorage.setItem('motm_leader', fromUrl); }
-      return sessionStorage.getItem('motm_leader') || '';
-    } catch (e) {
+      if (fromUrl) { localStorage.setItem('motm_leader', JSON.stringify({ code: fromUrl, at: Date.now() })); }
+      var saved = JSON.parse(localStorage.getItem('motm_leader') || 'null'); // remembered 45 days so a flyer scan still counts later
+      if (saved && saved.code && (Date.now() - saved.at) < 45 * 24 * 3600 * 1000) { return saved.code; }
       return '';
+    } catch (e) {
+      try { return new URLSearchParams(window.location.search).get('leader') || ''; } catch (e2) { return ''; }
     }
   }
 
@@ -42,8 +44,8 @@ window.MOTM = window.MOTM || {
     bar.className = 'leader-banner';
     bar.innerHTML =
       '<span>👋 You’re here on a personal invite from a Mission: On The Move team leader. ' +
-      'Registration isn’t open yet — leave your email below and we’ll credit your invite to their crew the moment it launches.</span>' +
-      '<a href="#signup-section" class="leader-banner-cta">Jump to signup ↓</a>' +
+      'Registration isn’t open yet — fill out Join a crew below and you’ll be added to their crew.</span>' +
+      '<a href="index.html#join-crew" class="leader-banner-cta">Join a crew ↓</a>' +
       '<button type="button" class="leader-banner-close" aria-label="Dismiss">&times;</button>';
     document.body.insertBefore(bar, document.body.firstChild);
     var closeBtn = bar.querySelector('.leader-banner-close');
@@ -65,6 +67,8 @@ window.MOTM = window.MOTM || {
     var statusEl = form.querySelector('.form-status');
     var submitBtn = form.querySelector('[type=submit]');
     var source = form.getAttribute('data-lead-form') || 'unknown';
+    var linkNote = form.querySelector('.crew-link-note');
+    if (linkNote && captureLeaderCode()) { linkNote.style.display = 'block'; }
 
     function setStatus(kind, message) {
       if (!statusEl) return;
